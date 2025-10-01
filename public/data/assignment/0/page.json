@@ -1,0 +1,35 @@
+{
+    "name": "Math Homework 1",
+    "subject": "Calculus",
+    "questions": [
+        {
+            "id": 0,
+            "imageUrl": "https://picsum.photos/500",
+            "questionText": "What is 1 + 1?",
+            "difficulty": "hard",
+            "type": "multiple_choice",
+            "options": [
+                {
+                    "isCorrect": false,
+                    "answerDisplayString": "3",
+                    "incorrectExplanationString": "its not 3 bruh"
+                },
+                {
+                    "isCorrect": false,
+                    "answerDisplayString": "4",
+                    "incorrectExplanationString": "its not 4 either bruh"
+                },
+                {
+                    "isCorrect": true,
+                    "answerDisplayString": "2",
+                    "correctExplanationString": "good job 1+1 is 2! :thumbs_up:"
+                },
+                {
+                    "isCorrect": false,
+                    "answerDisplayString": "-24",
+                    "incorrectExplanationString": ""
+                }
+            ]
+        }
+    ]
+}
