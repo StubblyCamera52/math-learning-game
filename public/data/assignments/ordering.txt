@@ -1,0 +1,1 @@
+assignments are put into folders with their json data and the assets needed for them
