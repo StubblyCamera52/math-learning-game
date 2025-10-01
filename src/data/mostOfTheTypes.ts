@@ -38,5 +38,5 @@ export type AssignmentData = {
 }
 
 export type Question = {
-
+    index: number;
 }
