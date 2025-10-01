@@ -1,28 +1,32 @@
-interface StudentData {
+export interface StudentData {
     id: number;
     username: string;
     grade: string;
     enrolledCourses: EnrolledCourseSingleStudentData[];
 }
 
-interface Course {
+export interface Course {
     id: number;
     name: string;
     type: "math" | "other";
 }
 
-interface EnrolledCourseSingleStudentData {
+export interface EnrolledCourseSingleStudentData {
     course: Course;
     assignmentsCompleted: number;
     assignmentProgress: Assignment[]
 }
 
-type Assignment = {
-    id: number; // For looking up assignment data in the json folder
+export interface Assignment {
+    id: string;
     name: string;
+    description: string;
     subject: string;
-    assignedDate: string; // ISO 8601
-    dueDate: string; // ISO 8601
-    totalQuestions: number;
-    questionsCompleted: number;
+    questions: Question[]
+    createdAt: string; // ISO 8601
+    updatedAt: string; // ISO 8601
+}
+
+export type Question = {
+
 }
