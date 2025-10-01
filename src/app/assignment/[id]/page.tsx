@@ -11,6 +11,10 @@ export default async function AssignmentPage({ params }: { params: Promise<{ id:
 
     return (<main className="flex flex-col gap-8 items-center justify-center w-screen h-screen bg-background">
         <div className="flex flex-col gap-3">
+            <div className="flex justify-between w-full">
+                <button id="next" className="rounded-full bg-accent w-12 h-12">{"<"}</button>
+                <button id="next" className="rounded-full bg-accent w-12 h-12">{">"}</button>
+            </div>
             <img src={assignmentData.questions[0].imageUrl} width={500} height={500} alt="question alt" className="rounded-lg"></img>
             {/* the assignment questions vvv dont ask why there is an error ill fix it later */}
             {assignmentData.questions[0].options.map((answer, index) => (
@@ -21,5 +25,5 @@ export default async function AssignmentPage({ params }: { params: Promise<{ id:
 }
 
 const AssignmentAnswerButton: React.FC<{ answerData: AssignmentDataAnswerMultipleChoiceOption }> = ({ answerData }) => {
-    return <Button className="w-full">{answerData.answerDisplayString}</Button>
+    return <Button className="w-full bg-primary">{answerData.answerDisplayString}</Button>
 }
