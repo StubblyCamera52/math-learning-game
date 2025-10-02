@@ -39,4 +39,8 @@ export type AssignmentData = {
 
 export type Question = {
     index: number;
+    text: string;
+    type: "multiple-choice" | "single-answer";
+    choices: string[];
+    correctAnswer: string;
 }

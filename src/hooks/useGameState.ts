@@ -2,12 +2,17 @@ import { useState, useEffect } from "react";
 import { Assignment, Question } from "@/data/mostOfTheTypes";
 
 export interface GameState {
-    currentQuestion: Question;
+    currentQuestion: Question | null;
     assignmentScore: number;
     questionIndex: number;
-    assignmentId: number;
+    assignmentId: number | null;
+    currentAssignment: Assignment | null;
 
-    submitAnswer(): boolean; // returns success or not
+    submitAnswer(selectedAnswer: string | number): boolean; // returns success or not
+    changeQuestion(questionIndex: number): void;
+
+    loadAssignment(assignmentId: number): Promise<void>;
+    completeAssignment(): void;
 }
 
 const useGameState = () => {
@@ -15,6 +20,19 @@ const useGameState = () => {
     const [assignmentScore, setAssignmentScore] = useState<number>(0);
     const [questionIndex, setQuestionIndex] = useState<number>(0);
     const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(null);
+
+    const changeQuestion = (questionIndex: number) => {
+        if (!currentAssignment) return;
+
+        if (questionIndex < currentAssignment.questions.length) {
+            setQuestionIndex(questionIndex);
+            setCurrentQuestion(currentAssignment.questions[questionIndex]);
+        }
+    }
+
+    const completeAssignment = () => {
+        if (!currentAssignment) return;
+    }
 }
 
 export default useGameState;

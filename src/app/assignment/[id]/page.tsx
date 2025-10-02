@@ -6,8 +6,6 @@ import { FC } from "react"
 
 export default async function AssignmentPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const assignmentDataFile = await fetch("http://localhost:3000/data/assignment/" + id + "/page.json")
-    const assignmentData = await assignmentDataFile.json() as AssignmentData
 
     return (<main className="flex flex-col gap-8 items-center justify-center w-screen h-screen bg-background">
         <div className="flex flex-col gap-3">
