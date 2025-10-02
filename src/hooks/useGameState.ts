@@ -27,7 +27,7 @@ const useGameState = () => {
             setAssignmentId(id);
             const assignmentData = await import("@/data/assignment"+id.toString());
             console.log(assignmentData.default.name)
-            setCurrentAssignment(assignmentData);
+            setCurrentAssignment(assignmentData.default);
             return true;
         } catch (error) {
             console.error("failed to laod assignent:", error);
