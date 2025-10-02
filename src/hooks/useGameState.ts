@@ -38,7 +38,7 @@ const useGameState = () => {
     const changeQuestion = (questionIndex: number) => {
         if (!currentAssignment) return;
 
-        if (questionIndex < currentAssignment.questions.length) {
+        if (questionIndex < currentAssignment.questions.length && questionIndex>-1) {
             setQuestionIndex(questionIndex);
             setCurrentQuestion(currentAssignment.questions[questionIndex]);
         }
@@ -48,7 +48,7 @@ const useGameState = () => {
         if (!currentAssignment) return;
     }
 
-    return {assignmentId, currentQuestion, changeQuestion, completeAssignment, loadAssignment, currentAssignment}
+    return {assignmentId, currentQuestion, changeQuestion, completeAssignment, loadAssignment, currentAssignment, questionIndex}
 }
 
 export default useGameState;
