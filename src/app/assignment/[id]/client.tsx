@@ -21,9 +21,11 @@ export default function ClientAssignmentPage({ id }: { id: number }) {
             <h1>Assignment: {assignmentId}</h1>
             <p>success: {loadedAssignment?.toString()}</p>
             <p>Question: {currentQuestion?.text}</p>
+            <div className="flex flex-col justify-center gap-3 mt-3">
             {currentQuestion?.choices.map((label, index) => (
-                <Button key={index}>{label}</Button>
+                <Button key={index} className="bg-primary">{label}</Button>
                 ))}
+            </div>
         </div>
     );
 }

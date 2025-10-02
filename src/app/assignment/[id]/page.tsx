@@ -7,8 +7,8 @@ export default async function AssignmentPage({ params }: { params: Promise<{ id:
     const id = parseInt(urlParams.id)
 
     return (
-        <main className="flex flex-col gap-8 items-center justify-center w-screen h-screen bg-background">
+        <div className="flex flex-col gap-8 items-center justify-center bg-background h-full">
             <ClientAssignmentPage id={id}></ClientAssignmentPage>
-        </main>
+        </div>
     );
 }
