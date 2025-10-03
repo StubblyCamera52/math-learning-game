@@ -1,8 +1,7 @@
 "use client";
 import { useGame } from "@/components/game/gameContextProvider";
 import { QuestionDisplay } from "@/components/game/questionDisplay";
-import { mathPracticeQuestions } from "@/data/practiceQuestions";
-import { randint } from "@/lib/utils/mathHelpers";
+import { linear_two_step } from "@/lib/utils/generators/linear/two-step";
 import { useEffect, useState } from "react";
 
 export default function PracticeClient() {
@@ -11,7 +10,7 @@ export default function PracticeClient() {
 
   useEffect(() => {
     setCurrentQuestion(
-      mathPracticeQuestions[randint(0, mathPracticeQuestions.length - 1)]
+      linear_two_step()
     );
   }, []);
 
@@ -23,11 +22,8 @@ export default function PracticeClient() {
           onSubmitAnswer={(answer) => {
             const correct = submitAnswer(answer);
             setCurrentQuestion(
-              mathPracticeQuestions[
-                randint(0, mathPracticeQuestions.length - 1)
-              ]
+              linear_two_step()
             );
-            console.log(randint(0, mathPracticeQuestions.length - 1));
             console.log(correct);
           }}
         ></QuestionDisplay>

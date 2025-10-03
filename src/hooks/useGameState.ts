@@ -60,10 +60,6 @@ const useGameState = () => {
     console.log(coins);
 
     if (answer == currentQuestion.correctAnswer) {
-      console.log(answeredQuestionIds);
-      if (answeredQuestionIds.includes(currentQuestion.index)) {
-        return true;
-      }
       setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index]);
       setAssignmentScore(assignmentScore + 1);
       setCoins(coins + 1);
