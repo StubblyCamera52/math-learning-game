@@ -7,6 +7,7 @@ import {
   SidebarGroupLabel,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarHeader,
 } from "@/components/ui/sidebar";
 
 const items = [

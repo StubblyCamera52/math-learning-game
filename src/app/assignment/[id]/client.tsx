@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import useGameState from "@/hooks/useGameState";
 import { useEffect, useState } from "react";
 import { QuestionDisplay } from "@/components/game/questionDisplay";
+import { useGame } from "@/components/game/gameContextProvider";
 
 export default function ClientAssignmentPage({ id }: { id: number }) {
   const {
@@ -13,7 +13,7 @@ export default function ClientAssignmentPage({ id }: { id: number }) {
     currentAssignment,
     loadAssignment,
     submitAnswer,
-  } = useGameState();
+  } = useGame();
   const [loadedAssignment, setLoadedAssignment] = useState<boolean | null>(
     null
   );

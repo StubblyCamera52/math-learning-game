@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Assignment, Question } from "@/data/mostOfTheTypes";
 
 export interface GameState {
+  assignmentId: number;
   currentQuestion: Question | null;
   assignmentScore: number;
-  questionIndex: number;
-  assignmentId: number | null;
+  coins: number;
   currentAssignment: Assignment | null;
 
-  submitAnswer(selectedAnswer: string | number): boolean; // returns success or not
-  changeQuestion(questionIndex: number): void;
-
-  loadAssignment(id: number): Promise<void>;
-  completeAssignment(): void;
+  submitAnswer: (answer: string) => boolean;
+  changeQuestion: (questionIndex: number) => void;
+  loadAssignment: (id: number) => Promise<boolean>;
+  completeAssignment: () => void;
+  setCurrentQuestion: Dispatch<SetStateAction<Question | null>>;
 }
 
 const useGameState = () => {
@@ -57,7 +57,7 @@ const useGameState = () => {
   const submitAnswer = (answer: string): boolean => {
     if (!currentQuestion) return false;
 
-    console.log(answer);
+    console.log(coins);
 
     if (answer == currentQuestion.correctAnswer) {
       console.log(answeredQuestionIds);
@@ -80,6 +80,8 @@ const useGameState = () => {
     currentAssignment,
     submitAnswer,
     setCurrentQuestion,
+    coins,
+    assignmentScore
   };
 };
 

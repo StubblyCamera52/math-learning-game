@@ -1,13 +1,13 @@
 "use client";
+import { useGame } from "@/components/game/gameContextProvider";
 import { QuestionDisplay } from "@/components/game/questionDisplay";
 import { mathPracticeQuestions } from "@/data/practiceQuestions";
-import useGameState from "@/hooks/useGameState";
 import { randint } from "@/lib/utils/mathHelpers";
 import { useEffect, useState } from "react";
 
 export default function PracticeClient() {
   const { currentQuestion, changeQuestion, submitAnswer, setCurrentQuestion } =
-    useGameState();
+    useGame();
 
   useEffect(() => {
     setCurrentQuestion(
