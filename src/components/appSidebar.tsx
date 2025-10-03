@@ -9,32 +9,24 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 const items = [
   {
     title: "Home",
-    url: "#",
-    icon: "Home",
+    url: "/",
   },
   {
-    title: "Profile",
-    url: "/profile",
-    icon: "Inbox",
+    title: "Gamble",
+    url: "/gamble"
   },
   {
     title: "Assignments",
     url: "/assignment",
-    icon: "Calendar",
   },
   {
     title: "Practice",
     url: "/practice",
-    icon: "Search",
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: "Settings",
   },
 ];
 
@@ -48,9 +40,9 @@ export function AppSidebar() {
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <a href={item.url}>
+                  <Link href={item.url}>
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

@@ -13,18 +13,31 @@ export interface GameState {
   loadAssignment: (id: number) => Promise<boolean>;
   completeAssignment: () => void;
   setCurrentQuestion: Dispatch<SetStateAction<Question | null>>;
+  multiplyCoins: (multiplier: number) => void;
 }
 
 const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [assignmentScore, setAssignmentScore] = useState<number>(0);
-  const [coins, setCoins] = useState<number>(0);
+  const [coins, setCoins] = useState<number>(() => {
+    console.log("useGameState initializing coins to 0");
+    return 0;
+  });
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<number[]>([]);
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     null
   );
   const [practiceMode, setPracticeMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log("useGameState mounted/remounted");
+    return () => console.log("useGameState unmounting");
+  }, []);
+
+  useEffect(() => {
+    console.log("Coins changed to:", coins);
+  }, [coins]);
 
   const loadAssignment = async (id: number): Promise<boolean> => {
     try {
@@ -70,6 +83,11 @@ const useGameState = () => {
     }
   };
 
+  const multiplyCoins = (multiplier: number): void => {
+    console.log(coins);
+    setCoins(Math.floor(coins * multiplier));
+  };
+
   return {
     assignmentId,
     currentQuestion,
@@ -81,6 +99,7 @@ const useGameState = () => {
     setCurrentQuestion,
     coins,
     assignmentScore,
+    multiplyCoins,
   };
 };
 

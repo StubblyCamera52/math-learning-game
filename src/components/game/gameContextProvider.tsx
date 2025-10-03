@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, ReactNode } from "react";
+import React, { createContext, useContext, ReactNode, useEffect } from "react";
 import useGameState, { GameState } from "@/hooks/useGameState";
 
 const GameContext = createContext<GameState | undefined>(undefined);
@@ -15,6 +15,11 @@ export const useGame = () => {
 
 export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const gameState = useGameState();
+
+  useEffect(() => {
+    console.log('GameProvider mounted');
+    return () => console.log('GameProvider unmounting');
+  }, []);
 
   return (
     <GameContext.Provider value={gameState}>
