@@ -3,7 +3,7 @@
 import useGameState from "@/hooks/useGameState";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Question } from "@/data/mostOfTheTypes";
 
 export function QuestionDisplay({
@@ -14,6 +14,15 @@ export function QuestionDisplay({
   question: Question;
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
+  const answerInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (answerInputRef.current) {
+      if (question.type == "single-answer") {
+        answerInputRef.current.focus();
+      }
+    }
+  }, []);
 
   return (
     <form
@@ -43,6 +52,7 @@ export function QuestionDisplay({
         </div>
       ) : (
         <Input
+          ref={answerInputRef}
           type="text"
           placeholder="answer"
           onChange={(e) => setSelectedAnswer(e.target.value)}
