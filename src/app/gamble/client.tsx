@@ -1,6 +1,7 @@
 "use client";
 import { useGame } from "@/components/game/gameContextProvider";
 import { useEffect, useRef } from "react";
+import Canvas from "@/components/ui/canvas";
 
 export default function GamebleClient() {
   const { coins, multiplyCoins } = useGame();
@@ -9,5 +10,5 @@ export default function GamebleClient() {
       multiplyCoins(2);
   }, [])
 
-  return (<></>);
+  return (<div><Canvas /></div>);
 }
