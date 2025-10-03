@@ -19,7 +19,6 @@ const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [assignmentScore, setAssignmentScore] = useState<number>(0);
-  const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [coins, setCoins] = useState<number>(0);
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<number[]>([]);
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
@@ -47,7 +46,6 @@ const useGameState = () => {
       questionIndex < currentAssignment.questions.length &&
       questionIndex > -1
     ) {
-      setQuestionIndex(questionIndex);
       setCurrentQuestion(currentAssignment.questions[questionIndex]);
     }
   };
@@ -59,14 +57,16 @@ const useGameState = () => {
   const submitAnswer = (answer: string): boolean => {
     if (!currentQuestion) return false;
 
+    console.log(answer);
+
     if (answer == currentQuestion.correctAnswer) {
+      console.log(answeredQuestionIds);
       if (answeredQuestionIds.includes(currentQuestion.index)) {
         return true;
       }
       setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index]);
       setAssignmentScore(assignmentScore + 1);
       setCoins(coins + 1);
-      console.log(assignmentScore.toString() + " " + coins.toString());
       return true;
     } else return false;
   };
@@ -78,10 +78,8 @@ const useGameState = () => {
     completeAssignment,
     loadAssignment,
     currentAssignment,
-    questionIndex,
     submitAnswer,
     setCurrentQuestion,
-    setQuestionIndex
   };
 };
 

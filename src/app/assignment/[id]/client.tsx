@@ -12,7 +12,6 @@ export default function ClientAssignmentPage({ id }: { id: number }) {
     completeAssignment,
     currentAssignment,
     loadAssignment,
-    questionIndex,
     submitAnswer,
   } = useGameState();
   const [loadedAssignment, setLoadedAssignment] = useState<boolean | null>(
@@ -33,13 +32,17 @@ export default function ClientAssignmentPage({ id }: { id: number }) {
       <div className="flex flex-row justify-between gap-4">
         <Button
           className="rounded-full size-12"
-          onClick={() => changeQuestion(questionIndex - 1)}
+          onClick={() => {
+            if (currentQuestion) changeQuestion(currentQuestion?.index - 1);
+          }}
         >
           {"<"}
         </Button>
         <Button
           className="rounded-full h-12 grow"
-          onClick={() => changeQuestion(questionIndex + 1)}
+          onClick={() => {
+            if (currentQuestion) changeQuestion(currentQuestion?.index + 1);
+          }}
         >
           Next
         </Button>

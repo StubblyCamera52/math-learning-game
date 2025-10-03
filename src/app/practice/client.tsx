@@ -2,14 +2,28 @@
 import { QuestionDisplay } from "@/components/game/questionDisplay";
 import { mathPracticeQuestions } from "@/data/practiceQuestions";
 import useGameState from "@/hooks/useGameState";
+import { useEffect, useState } from "react";
 
 export default function PracticeClient() {
-  const {currentQuestion, changeQuestion, questionIndex, submitAnswer} = useGameState();
+  const { currentQuestion, changeQuestion, submitAnswer, setCurrentQuestion } =
+    useGameState();
 
+  useEffect(() => {
+    setCurrentQuestion(mathPracticeQuestions[0]);
+  }, []);
   return (
-    <QuestionDisplay
-      question={mathPracticeQuestions[1]}
-      onSubmitAnswer={(answer) => (submitAnswer(answer))}
-    ></QuestionDisplay>
+    <div>
+      {currentQuestion ? (
+        <QuestionDisplay
+          question={currentQuestion}
+          onSubmitAnswer={(answer) => {
+            const correct = submitAnswer(answer);
+            console.log(correct);
+          }}
+        ></QuestionDisplay>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 }
