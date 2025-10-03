@@ -64,7 +64,10 @@ const useGameState = () => {
       setAssignmentScore(assignmentScore + 1);
       setCoins(coins + 1);
       return true;
-    } else return false;
+    } else {
+      setCoins(Math.max(coins - 1, 0));
+      return false;
+    }
   };
 
   return {
@@ -77,7 +80,7 @@ const useGameState = () => {
     submitAnswer,
     setCurrentQuestion,
     coins,
-    assignmentScore
+    assignmentScore,
   };
 };
 

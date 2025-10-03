@@ -61,6 +61,9 @@ export function QuestionDisplay({
               e.currentTarget.form?.dispatchEvent(
                 new Event("submit", { cancelable: true })
               );
+              if (answerInputRef.current) {
+                answerInputRef.current.value = "";
+              }
             }
           }}
         />

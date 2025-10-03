@@ -8,7 +8,7 @@ export default function TopBar() {
   const gameState = useGame();
 
   return (
-    <div className="flex justify-between items-center p-2 border-b">
+    <div className="flex justify-between items-center p-2 border-b fixed">
       <SidebarTrigger />
       <CoinCounter coins={gameState.coins} />
     </div>
