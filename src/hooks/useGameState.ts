@@ -25,6 +25,7 @@ const useGameState = () => {
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     null
   );
+  const [practiceMode, setPracticeMode] = useState<boolean>(false);
 
   const loadAssignment = async (id: number): Promise<boolean> => {
     try {
@@ -62,7 +63,7 @@ const useGameState = () => {
       if (answeredQuestionIds.includes(currentQuestion.index)) {
         return true;
       }
-      setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index])
+      setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index]);
       setAssignmentScore(assignmentScore + 1);
       setCoins(coins + 1);
       console.log(assignmentScore.toString() + " " + coins.toString());
@@ -79,6 +80,8 @@ const useGameState = () => {
     currentAssignment,
     questionIndex,
     submitAnswer,
+    setCurrentQuestion,
+    setQuestionIndex
   };
 };
 
