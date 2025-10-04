@@ -38,20 +38,24 @@ export default function GamebleClient() {
     // @ts-ignore
     Matter.Render.setPixelRatio(render, "auto");
 
-    let puck = Bodies.circle(100, 0, 10, { restitution: 0.99, friction: 0 });
+    let puck = Bodies.circle(100, 0, 10, {
+      restitution: 0.99,
+      friction: 0,
+      render: {},
+    });
     let walls: Matter.Body[] = [];
     walls.push(
-      Bodies.rectangle(300, 700, 700, 10, {
+      Bodies.rectangle(300, 704, 700, 10, {
         isStatic: true,
       })
     );
     walls.push(
-      Bodies.rectangle(0, 350, 10, 800, {
+      Bodies.rectangle(-4, 350, 10, 800, {
         isStatic: true,
       })
     );
     walls.push(
-      Bodies.rectangle(600, 350, 10, 800, {
+      Bodies.rectangle(604, 350, 10, 800, {
         isStatic: true,
       })
     );
@@ -60,6 +64,15 @@ export default function GamebleClient() {
       isSensor: true,
       render: {
         fillStyle: "transparent",
+      },
+    });
+
+    let plinkoTexture = Bodies.rectangle(345, 670, 1, 1, {
+      isStatic: true,
+      isSensor: true,
+      render: {
+        fillStyle: "transparent",
+        sprite: { texture: "/Multiplier.png", xScale: 0.5, yScale: 0.5 },
       },
     });
 
@@ -179,13 +192,19 @@ export default function GamebleClient() {
       }
     });
 
-    Composite.add(engine.world, [puck, plinkoDetector, ...walls, ...pegs]);
+    Composite.add(engine.world, [
+      plinkoTexture,
+      puck,
+      plinkoDetector,
+      ...walls,
+      ...pegs,
+    ]);
 
     Render.run(render);
 
-    let runner = Runner.create();
-
-    Runner.run(runner, engine);
+    setInterval(function () {
+      Engine.update(engine, 1000 / 60);
+    }, 1000 / 60);
   }, []);
 
   return (
