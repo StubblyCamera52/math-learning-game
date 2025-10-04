@@ -1,21 +1,19 @@
 "use client";
 import { useGame } from "@/components/game/gameContextProvider";
 import { useEffect, useRef, useState } from "react";
-import Matter from "matter-js";
+import Matter, { Body } from "matter-js";
 
 export default function GamebleClient() {
   const { coins, multiplyCoins } = useGame();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const puckRef = useRef<Matter.Body>(null);
 
   useEffect(() => {
-    multiplyCoins(2);
-
     // this is an aboslute nightmare... but it works.
     if (!canvasRef.current) return;
 
     let Engine = Matter.Engine;
     let Render = Matter.Render;
-    let Runner = Matter.Runner;
     let Bodies = Matter.Bodies;
     let Events = Matter.Events;
     let Composite = Matter.Composite;
@@ -39,10 +37,13 @@ export default function GamebleClient() {
     Matter.Render.setPixelRatio(render, "auto");
 
     let puck = Bodies.circle(100, 0, 10, {
-      restitution: 0.99,
+      restitution: 0.8,
       friction: 0,
       render: {},
     });
+
+    puckRef.current = puck;
+
     let walls: Matter.Body[] = [];
     walls.push(
       Bodies.rectangle(300, 704, 700, 10, {
@@ -135,62 +136,50 @@ export default function GamebleClient() {
 
       for (var i = 0, j = pairs.length; i != j; ++i) {
         var pair = pairs[i];
+        let puckBody: Matter.Body | null = null;
 
-        if (pair.bodyA === plinkoDetector) {
-          pair.bodyB.render.fillStyle = "#ff0000";
-          pair.bodyB.isStatic = true;
-          if (pair.bodyB.position.x < 60 || pair.bodyB.position.x > 540) {
+        if (pair.bodyA === plinkoDetector && !pair.bodyB.isStatic) {
+          puckBody = pair.bodyB;
+          console.log("a");
+        } else if (pair.bodyB === plinkoDetector && !pair.bodyA.isStatic) {
+          puckBody = pair.bodyA;
+          console.log("b");
+        }
+
+        if (puckBody) {
+          puckBody.render.fillStyle = "#ff0000";
+          puckBody.isStatic = true;
+
+          const x = puckBody.position.x;
+
+          if (x < 60 || x > 540) {
             multiplyCoins(4);
-          } else if (
-            (pair.bodyB.position.x > 60 && pair.bodyB.position.x < 120) ||
-            (pair.bodyB.position.x < 540 && pair.bodyB.position.x > 480)
-          ) {
+          } else if ((x > 60 && x < 120) || (x < 540 && x > 480)) {
             multiplyCoins(2);
-          } else if (
-            (pair.bodyB.position.x > 120 && pair.bodyB.position.x < 180) ||
-            (pair.bodyB.position.x < 480 && pair.bodyB.position.x > 420)
-          ) {
+          } else if ((x > 120 && x < 180) || (x < 480 && x > 420)) {
             multiplyCoins(1.5);
-          } else if (
-            (pair.bodyB.position.x > 180 && pair.bodyB.position.x < 240) ||
-            (pair.bodyB.position.x < 420 && pair.bodyB.position.x > 360)
-          ) {
+          } else if ((x > 180 && x < 240) || (x < 420 && x > 360)) {
+            multiplyCoins(1);
+          } else if (x > 240 && x < 360) {
             multiplyCoins(0.5);
-          } else if (
-            pair.bodyB.position.x > 240 &&
-            pair.bodyB.position.x < 360
-          ) {
-            multiplyCoins(0.25);
-          }
-        } else if (pair.bodyB === plinkoDetector) {
-          pair.bodyA.render.fillStyle = "#ff0000";
-          pair.bodyA.isStatic = true;
-          if (pair.bodyA.position.x < 60 || pair.bodyA.position.x > 540) {
-            multiplyCoins(4);
-          } else if (
-            (pair.bodyA.position.x > 60 && pair.bodyA.position.x < 120) ||
-            (pair.bodyA.position.x < 540 && pair.bodyA.position.x > 480)
-          ) {
-            multiplyCoins(2);
-          } else if (
-            (pair.bodyA.position.x > 120 && pair.bodyA.position.x < 180) ||
-            (pair.bodyA.position.x < 480 && pair.bodyA.position.x > 420)
-          ) {
-            multiplyCoins(1.5);
-          } else if (
-            (pair.bodyA.position.x > 180 && pair.bodyA.position.x < 240) ||
-            (pair.bodyA.position.x < 420 && pair.bodyA.position.x > 360)
-          ) {
-            multiplyCoins(0.5);
-          } else if (
-            pair.bodyA.position.x > 240 &&
-            pair.bodyA.position.x < 360
-          ) {
-            multiplyCoins(0.25);
           }
         }
       }
     });
+
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.code === "Space" && puckRef.current) {
+        event.preventDefault();
+
+        const randomX = Math.random() * 500 + 50;
+        Body.setPosition(puckRef.current, { x: randomX, y: 50 });
+        Body.setVelocity(puckRef.current, { x: 0, y: 0 });
+        Body.setAngularVelocity(puckRef.current, 0);
+        puckRef.current.isStatic = false;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
 
     Composite.add(engine.world, [
       plinkoTexture,
@@ -205,6 +194,12 @@ export default function GamebleClient() {
     setInterval(function () {
       Engine.update(engine, 1000 / 60);
     }, 1000 / 60);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+      Render.stop(render);
+      Engine.clear(engine);
+    };
   }, []);
 
   return (

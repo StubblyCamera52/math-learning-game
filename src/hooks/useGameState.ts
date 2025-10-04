@@ -68,17 +68,20 @@ const useGameState = () => {
     if (answer == currentQuestion.correctAnswer) {
       setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index]);
       setAssignmentScore(assignmentScore + 1);
-      setCoins(coins + 1);
+      setCoins(prevCoins => prevCoins + 1);
       return true;
     } else {
-      setCoins(Math.max(coins - 1, 0));
+      setCoins(prevCoins => Math.max(prevCoins - 1, 0));
       return false;
     }
   };
 
   const multiplyCoins = (multiplier: number): void => {
-    console.log(coins);
-    setCoins(Math.floor(coins * multiplier));
+    console.log(multiplier);
+    setCoins((prevCoins) => {
+      console.log(prevCoins);
+      return Math.floor(prevCoins * multiplier);
+    });
   };
 
   return {
