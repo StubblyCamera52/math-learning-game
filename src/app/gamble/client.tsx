@@ -9,6 +9,8 @@ export default function GamebleClient() {
 
   useEffect(() => {
     multiplyCoins(2);
+
+    // this is an aboslute nightmare... but it works.
     if (!canvasRef.current) return;
 
     let Engine = Matter.Engine;
@@ -25,36 +27,35 @@ export default function GamebleClient() {
       options: {
         width: 600,
         height: 700,
-        pixelRatio: 1,
         background: "#fafafa",
         wireframeBackground: "#222",
         hasBounds: true,
-        //enabled: true,
         wireframes: false,
-        showSleeping: true,
         showDebug: true,
-        showBroadphase: false,
-        showBounds: false,
-        showVelocity: false,
-        showCollisions: false,
-        showSeparations: false,
-        showAxes: false,
-        showPositions: false,
-        showAngleIndicator: false,
-        showIds: false,
-        //showShadows: false,
-        showVertexNumbers: false,
-        showConvexHulls: false,
-        showInternalEdges: false,
-        showMousePosition: false,
       },
     });
 
-    let puck = Bodies.circle(290, 0, 10, { restitution: 0.99 });
-    let ground2 = Bodies.rectangle(300, 700, 700, 60, {
-      isStatic: true,
-    });
-    let plinkoDetector = Bodies.rectangle(300, 700, 700, 70, {
+    // @ts-ignore
+    Matter.Render.setPixelRatio(render, "auto");
+
+    let puck = Bodies.circle(100, 0, 10, { restitution: 0.99, friction: 0 });
+    let walls: Matter.Body[] = [];
+    walls.push(
+      Bodies.rectangle(300, 700, 700, 10, {
+        isStatic: true,
+      })
+    );
+    walls.push(
+      Bodies.rectangle(0, 350, 10, 800, {
+        isStatic: true,
+      })
+    );
+    walls.push(
+      Bodies.rectangle(600, 350, 10, 800, {
+        isStatic: true,
+      })
+    );
+    let plinkoDetector = Bodies.rectangle(300, 700, 700, 20, {
       isStatic: true,
       isSensor: true,
       render: {
@@ -64,17 +65,56 @@ export default function GamebleClient() {
 
     let pegs: Matter.Body[] = [];
 
-    for (let i = 0; i < 10; i++) {
-      console.log("e");
-      pegs.push(Bodies.circle(i * 60 + 30, 200, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60, 250, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60 + 30, 300, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60, 350, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60 + 30, 400, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60, 450, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60 + 30, 500, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60, 550, 15, { isStatic: true }));
-      pegs.push(Bodies.circle(i * 60 + 30, 600, 15, { isStatic: true }));
+    for (let i = 0; i < 11; i++) {
+      pegs.push(
+        Bodies.circle(i * 60 + 30, 200, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60, 250, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 30, 300, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60, 350, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 30, 400, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60, 450, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 30, 500, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60, 550, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 30, 600, 15, {
+          isStatic: true,
+        })
+      );
+    }
+
+    for (let i = 1; i < 10; i++) {
+      pegs.push(Bodies.rectangle(60 * i, 700, 10, 130, { isStatic: true }));
     }
 
     Events.on(engine, "collisionStart", function (event) {
@@ -85,13 +125,61 @@ export default function GamebleClient() {
 
         if (pair.bodyA === plinkoDetector) {
           pair.bodyB.render.fillStyle = "#ff0000";
+          pair.bodyB.isStatic = true;
+          if (pair.bodyB.position.x < 60 || pair.bodyB.position.x > 540) {
+            multiplyCoins(4);
+          } else if (
+            (pair.bodyB.position.x > 60 && pair.bodyB.position.x < 120) ||
+            (pair.bodyB.position.x < 540 && pair.bodyB.position.x > 480)
+          ) {
+            multiplyCoins(2);
+          } else if (
+            (pair.bodyB.position.x > 120 && pair.bodyB.position.x < 180) ||
+            (pair.bodyB.position.x < 480 && pair.bodyB.position.x > 420)
+          ) {
+            multiplyCoins(1.5);
+          } else if (
+            (pair.bodyB.position.x > 180 && pair.bodyB.position.x < 240) ||
+            (pair.bodyB.position.x < 420 && pair.bodyB.position.x > 360)
+          ) {
+            multiplyCoins(0.5);
+          } else if (
+            pair.bodyB.position.x > 240 &&
+            pair.bodyB.position.x < 360
+          ) {
+            multiplyCoins(0.25);
+          }
         } else if (pair.bodyB === plinkoDetector) {
           pair.bodyA.render.fillStyle = "#ff0000";
+          pair.bodyA.isStatic = true;
+          if (pair.bodyA.position.x < 60 || pair.bodyA.position.x > 540) {
+            multiplyCoins(4);
+          } else if (
+            (pair.bodyA.position.x > 60 && pair.bodyA.position.x < 120) ||
+            (pair.bodyA.position.x < 540 && pair.bodyA.position.x > 480)
+          ) {
+            multiplyCoins(2);
+          } else if (
+            (pair.bodyA.position.x > 120 && pair.bodyA.position.x < 180) ||
+            (pair.bodyA.position.x < 480 && pair.bodyA.position.x > 420)
+          ) {
+            multiplyCoins(1.5);
+          } else if (
+            (pair.bodyA.position.x > 180 && pair.bodyA.position.x < 240) ||
+            (pair.bodyA.position.x < 420 && pair.bodyA.position.x > 360)
+          ) {
+            multiplyCoins(0.5);
+          } else if (
+            pair.bodyA.position.x > 240 &&
+            pair.bodyA.position.x < 360
+          ) {
+            multiplyCoins(0.25);
+          }
         }
       }
     });
 
-    Composite.add(engine.world, [puck, plinkoDetector, ground2, ...pegs]);
+    Composite.add(engine.world, [puck, plinkoDetector, ...walls, ...pegs]);
 
     Render.run(render);
 
