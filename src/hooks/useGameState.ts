@@ -2,6 +2,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Assignment, Question } from "@/data/mostOfTheTypes";
 import { linear_two_step } from "@/lib/utils/generators/linear/two-step";
 import { arithmetic_addition_3 } from "@/lib/utils/generators/arithmetic/addition3";
+import { toast } from "sonner";
 
 const questionGenerators = {
   linear_two_step,
@@ -14,6 +15,7 @@ export interface GameState {
   assignmentScore: number;
   coins: number;
   currentAssignment: Assignment | null;
+  questionsAnswered: number;
 
   submitAnswer: (answer: string) => boolean;
   changeQuestion: (questionIndex: number) => void;
@@ -44,6 +46,7 @@ const useGameState = () => {
   const [currentQuestionPool, setCurrentQuestionPool] =
     useState<string>("linear_two_step");
   const [practiceMode, setPracticeMode] = useState<boolean>(false);
+  const [questionsAnswered, setQuestionsAnswered] = useState<number>(0);
 
   useEffect(() => {
     console.log("useGameState mounted/remounted");
@@ -93,15 +96,19 @@ const useGameState = () => {
   const submitAnswer = (answer: string): boolean => {
     if (!currentQuestion) return false;
 
+    setQuestionsAnswered(n => n+1);
+
     console.log(coins);
 
     if (answer == currentQuestion.correctAnswer) {
       setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index]);
       setAssignmentScore(assignmentScore + 1);
       setCoins((prevCoins) => prevCoins + 1);
+      toast("Correct :) +1 coin");
       return true;
     } else {
       setCoins((prevCoins) => Math.max(prevCoins - 1, 0));
+      toast("Wrong :( -1 coin");
       return false;
     }
   };
@@ -136,6 +143,7 @@ const useGameState = () => {
     unlockQuestionPool,
     setCoins,
     generateQuestion,
+    questionsAnswered
   };
 };
 

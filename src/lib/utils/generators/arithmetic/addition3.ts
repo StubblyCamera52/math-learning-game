@@ -15,7 +15,7 @@ const arithmetic_addition_3 = (): Question => {
   let question: Question = {
     index: 0,
     type: "single-answer",
-    text: `${first} + ${second} = ?`,
+    text: `Solve $$${first} + ${second} = ?$$`,
     choices: [],
     correctAnswer: result.toString(),
   };

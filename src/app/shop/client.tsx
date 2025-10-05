@@ -25,9 +25,9 @@ type ShopItem = {
 const shopItems: ShopItem[] = [
   {
     id: 1,
-    title: "Unlock New Math for Practice Mode",
+    title: "Unlock New Math",
     description: "3 Digit Addition",
-    details: "Unlocks 3 digit addition problems for practice mode",
+    details: "3 digit addition problems for practice mode",
     price: 5,
     type: "unlock",
     unlockName: "arithmetic_addition_3",
