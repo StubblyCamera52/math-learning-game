@@ -1,10 +1,10 @@
 "use client";
 import { useGame } from "@/components/game/gameContextProvider";
 import { QuestionDisplay } from "@/components/game/questionDisplay";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function PracticeClient() {
-  const { currentQuestion, changeQuestion, submitAnswer, generateQuestion, currentQuestionPool, setCurrentQuestionPool, unlockedQuestionPools, setCurrentQuestion} =
+  const { currentQuestion, submitAnswer, generateQuestion, setCurrentQuestion} =
     useGame();
 
   useEffect(() => {

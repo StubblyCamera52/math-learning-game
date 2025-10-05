@@ -4,7 +4,8 @@ import { linear_two_step } from "@/lib/utils/generators/linear/two-step";
 import { arithmetic_addition_3 } from "@/lib/utils/generators/arithmetic/addition3";
 
 const questionGenerators = {
-  linear_two_step, arithmetic_addition_3
+  linear_two_step,
+  arithmetic_addition_3,
 };
 
 export interface GameState {
@@ -32,13 +33,16 @@ const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [assignmentScore, setAssignmentScore] = useState<number>(0);
-  const [coins, setCoins] = useState<number>(4);
+  const [coins, setCoins] = useState<number>(5);
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<number[]>([]);
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     null
   );
-  const [unlockedQuestionPools, setUnlockedQuestionPools] = useState<string[]>(["linear_two_step"]);
-  const [currentQuestionPool, setCurrentQuestionPool] = useState<string>("linear_two_step");
+  const [unlockedQuestionPools, setUnlockedQuestionPools] = useState<string[]>([
+    "linear_two_step",
+  ]);
+  const [currentQuestionPool, setCurrentQuestionPool] =
+    useState<string>("linear_two_step");
   const [practiceMode, setPracticeMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -46,10 +50,17 @@ const useGameState = () => {
     return () => console.log("useGameState unmounting");
   }, []);
 
+  useEffect(() => {
+    setCurrentQuestion(generateQuestion);
+  }, [currentQuestionPool]);
+
   const generateQuestion = (): Question => {
-    const generator = questionGenerators[currentQuestionPool as keyof typeof questionGenerators];
+    const generator =
+      questionGenerators[
+        currentQuestionPool as keyof typeof questionGenerators
+      ];
     return generator();
-  }
+  };
 
   const loadAssignment = async (id: number): Promise<boolean> => {
     try {
@@ -87,10 +98,10 @@ const useGameState = () => {
     if (answer == currentQuestion.correctAnswer) {
       setAnsweredQuestionIds([...answeredQuestionIds, currentQuestion.index]);
       setAssignmentScore(assignmentScore + 1);
-      setCoins(prevCoins => prevCoins + 1);
+      setCoins((prevCoins) => prevCoins + 1);
       return true;
     } else {
-      setCoins(prevCoins => Math.max(prevCoins - 1, 0));
+      setCoins((prevCoins) => Math.max(prevCoins - 1, 0));
       return false;
     }
   };
@@ -104,8 +115,8 @@ const useGameState = () => {
   };
 
   const unlockQuestionPool = (unlockName: string): void => {
-    setUnlockedQuestionPools([...unlockedQuestionPools, unlockName])
-  }
+    setUnlockedQuestionPools([...unlockedQuestionPools, unlockName]);
+  };
 
   return {
     assignmentId,
@@ -124,7 +135,7 @@ const useGameState = () => {
     unlockedQuestionPools,
     unlockQuestionPool,
     setCoins,
-    generateQuestion
+    generateQuestion,
   };
 };
 
