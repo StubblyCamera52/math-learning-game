@@ -2,6 +2,7 @@
 import { useGame } from "@/components/game/gameContextProvider";
 import { useEffect, useRef, useState } from "react";
 import Matter, { Body } from "matter-js";
+import { toast } from "sonner";
 
 export default function GamebleClient() {
   const { coins, multiplyCoins } = useGame();
@@ -154,14 +155,19 @@ export default function GamebleClient() {
 
           if (x < 60 || x > 540) {
             multiplyCoins(4);
+            toast("4X COINS!!!");
           } else if ((x > 60 && x < 120) || (x < 540 && x > 480)) {
             multiplyCoins(2);
+            toast("2X COINS");
           } else if ((x > 120 && x < 180) || (x < 480 && x > 420)) {
             multiplyCoins(1.5);
+            toast("1.5X Coins");
           } else if ((x > 180 && x < 240) || (x < 420 && x > 360)) {
             multiplyCoins(1);
+            toast("1X coins.");
           } else if (x > 240 && x < 360) {
             multiplyCoins(0.5);
+            toast("0.5X Coins :(")
           }
         }
       }

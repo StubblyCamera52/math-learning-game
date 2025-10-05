@@ -17,16 +17,20 @@ const items = [
     url: "/",
   },
   {
+    title: "Practice",
+    url: "/practice",
+  },
+  {
     title: "Gamble",
     url: "/gamble"
   },
+  // {
+  //   title: "Assignments",
+  //   url: "/assignment",
+  // },
   {
-    title: "Assignments",
-    url: "/assignment",
-  },
-  {
-    title: "Practice",
-    url: "/practice",
+    title: "Shop",
+    url: "/shop"
   },
 ];
 
