@@ -1,5 +1,11 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Assignment, Question } from "@/data/mostOfTheTypes";
+import { linear_two_step } from "@/lib/utils/generators/linear/two-step";
+import { arithmetic_addition_3 } from "@/lib/utils/generators/arithmetic/addition3";
+
+const questionGenerators = {
+  linear_two_step, arithmetic_addition_3
+};
 
 export interface GameState {
   assignmentId: number;
@@ -14,23 +20,36 @@ export interface GameState {
   completeAssignment: () => void;
   setCurrentQuestion: Dispatch<SetStateAction<Question | null>>;
   multiplyCoins: (multiplier: number) => void;
+  setCoins: Dispatch<SetStateAction<number>>;
+  currentQuestionPool: string;
+  setCurrentQuestionPool: Dispatch<SetStateAction<string>>;
+  unlockedQuestionPools: string[];
+  unlockQuestionPool: (unlockName: string) => void;
+  generateQuestion: () => Question;
 }
 
 const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [assignmentScore, setAssignmentScore] = useState<number>(0);
-  const [coins, setCoins] = useState<number>(10);
+  const [coins, setCoins] = useState<number>(4);
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<number[]>([]);
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     null
   );
+  const [unlockedQuestionPools, setUnlockedQuestionPools] = useState<string[]>(["linear_two_step"]);
+  const [currentQuestionPool, setCurrentQuestionPool] = useState<string>("linear_two_step");
   const [practiceMode, setPracticeMode] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("useGameState mounted/remounted");
     return () => console.log("useGameState unmounting");
   }, []);
+
+  const generateQuestion = (): Question => {
+    const generator = questionGenerators[currentQuestionPool as keyof typeof questionGenerators];
+    return generator();
+  }
 
   const loadAssignment = async (id: number): Promise<boolean> => {
     try {
@@ -77,12 +96,16 @@ const useGameState = () => {
   };
 
   const multiplyCoins = (multiplier: number): void => {
-    console.log(multiplier);
+    // console.log(multiplier);
     setCoins((prevCoins) => {
-      console.log(prevCoins);
+      // console.log(prevCoins);
       return Math.floor(prevCoins * multiplier);
     });
   };
+
+  const unlockQuestionPool = (unlockName: string): void => {
+    setUnlockedQuestionPools([...unlockedQuestionPools, unlockName])
+  }
 
   return {
     assignmentId,
@@ -96,6 +119,11 @@ const useGameState = () => {
     coins,
     assignmentScore,
     multiplyCoins,
+    setCurrentQuestionPool,
+    currentQuestionPool,
+    unlockedQuestionPools,
+    unlockQuestionPool,
+    setCoins
   };
 };
 

@@ -26,7 +26,7 @@ export default function GamebleClient() {
       options: {
         width: 600,
         height: 700,
-        background: "#fafafa",
+        background: "#FDFBD4",
         wireframeBackground: "#222",
         hasBounds: true,
         wireframes: false,
@@ -40,7 +40,9 @@ export default function GamebleClient() {
     let puck = Bodies.circle(100, 0, 10, {
       restitution: 0.8,
       friction: 0,
-      render: {},
+      render: {
+        fillStyle: "#545333"
+      },
     });
 
     puckRef.current = puck;
@@ -141,10 +143,10 @@ export default function GamebleClient() {
 
         if (pair.bodyA === plinkoDetector && !pair.bodyB.isStatic) {
           puckBody = pair.bodyB;
-          console.log("a");
+          // console.log("a");
         } else if (pair.bodyB === plinkoDetector && !pair.bodyA.isStatic) {
           puckBody = pair.bodyA;
-          console.log("b");
+          // console.log("b");
         }
 
         if (puckBody) {
@@ -169,6 +171,7 @@ export default function GamebleClient() {
             multiplyCoins(0.5);
             toast("0.5X Coins :(")
           }
+          break;
         }
       }
     });
@@ -181,6 +184,7 @@ export default function GamebleClient() {
         Body.setPosition(puckRef.current, { x: randomX, y: 50 });
         Body.setVelocity(puckRef.current, { x: 0, y: 0 });
         Body.setAngularVelocity(puckRef.current, 0);
+        puckRef.current.render.fillStyle = "#545333"
         puckRef.current.isStatic = false;
       }
     };
@@ -210,7 +214,7 @@ export default function GamebleClient() {
 
   return (
     <div>
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} className="rounded-xl"/>
     </div>
   );
 }

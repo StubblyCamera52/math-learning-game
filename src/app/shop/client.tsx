@@ -1,4 +1,5 @@
 "use client";
+import { useGame } from "@/components/game/gameContextProvider";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { toast } from "sonner";
 
 type ShopItem = {
   id: number;
@@ -18,7 +20,6 @@ type ShopItem = {
   price: number;
   type: "unlock";
   unlockName: string; // name of unlock for usegamestate to actually unlock it.
-  isUnlocked: boolean;
 };
 
 const shopItems: ShopItem[] = [
@@ -27,14 +28,15 @@ const shopItems: ShopItem[] = [
     title: "Unlock New Math for Practice Mode",
     description: "3 Digit Addition",
     details: "Unlocks 3 digit addition problems for practice mode",
-    price: 30,
+    price: 5,
     type: "unlock",
-    unlockName: "Addition3",
-    isUnlocked: false,
+    unlockName: "arithmetic_addition_3",
   },
 ];
 
 export default function ShopClient() {
+  const gameState = useGame();
+
   return (
     <div>
       {shopItems.map((item, index) => {
@@ -48,9 +50,17 @@ export default function ShopClient() {
             price={item.price}
             type={item.type}
             onBuy={() => {
-              console.log(item.unlockName);
+              if (gameState.coins >= item.price && !gameState.unlockedQuestionPools.includes(item.unlockName)) {
+                console.log(item.unlockName);
+                gameState.unlockQuestionPool(item.unlockName);
+                gameState.setCoins(prevCoins => prevCoins - item.price);
+              } else {
+                toast("Not enough coins. Maybe go do some gambling or answer some math questions.")
+              }
             }}
-            isUnlocked={item.isUnlocked}
+            isUnlocked={gameState.unlockedQuestionPools.includes(
+              item.unlockName
+            )}
           />
         );
       })}
