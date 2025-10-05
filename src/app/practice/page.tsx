@@ -2,7 +2,7 @@ import PracticeClient from "./client";
 
 export default function PracticePage() {
   return (
-      <div className="flex flex-col gap-8 items-center justify-center bg-background h-full">
+      <div className="flex-1 flex items-center justify-center p-14 h-full">
         <PracticeClient></PracticeClient>
       </div>
     );

@@ -56,8 +56,9 @@ export function QuestionDisplay({
       ) : (
         <Input
           ref={answerInputRef}
+          className="h-14 font-mono"
           type="text"
-          placeholder="answer"
+          placeholder="Enter answer"
           onChange={(e) => setSelectedAnswer(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
