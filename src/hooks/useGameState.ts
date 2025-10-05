@@ -123,7 +123,8 @@ const useGameState = () => {
     currentQuestionPool,
     unlockedQuestionPools,
     unlockQuestionPool,
-    setCoins
+    setCoins,
+    generateQuestion
   };
 };
 
