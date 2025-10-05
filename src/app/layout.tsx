@@ -6,6 +6,7 @@ import "./globals.css";
 import { GameProvider } from "@/components/game/gameContextProvider";
 import TopBar from "@/components/topBar";
 import { Toaster } from "sonner";
+import { MathJaxContext } from "better-react-mathjax";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,16 +33,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        <GameProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <main className="w-screen h-screen">
-              <TopBar />
-              {children}
-            </main>
-            <Toaster />
-          </SidebarProvider>
-        </GameProvider>
+        <MathJaxContext>
+          <GameProvider>
+            <SidebarProvider>
+              <AppSidebar />
+              <main className="w-screen h-screen">
+                <TopBar />
+                {children}
+              </main>
+              <Toaster />
+            </SidebarProvider>
+          </GameProvider>
+        </MathJaxContext>
       </body>
     </html>
   );

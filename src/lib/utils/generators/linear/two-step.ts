@@ -20,7 +20,7 @@ const linear_two_step = (): Question => {
   let question: Question = {
     index: 0,
     type: "single-answer",
-    text: `${first}x ${sign} ${third} = ${result}`,
+    text: `What is the value of x? $$${first}x ${sign} ${third} = ${result}$$`,
     choices: [],
     correctAnswer: second.toString()
   }

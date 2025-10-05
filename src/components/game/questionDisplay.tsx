@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useState, useEffect, useRef } from "react";
 import { Question } from "@/data/mostOfTheTypes";
+import { MathJax } from "better-react-mathjax";
 
 export function QuestionDisplay({
   onSubmitAnswer,
@@ -32,7 +33,9 @@ export function QuestionDisplay({
         onSubmitAnswer(selectedAnswer);
       }}
     >
-      <p className="font-bold text-xl mb-3">{question.text}</p>
+      <p className="font-bold text-xl mb-3">
+        <MathJax>{question.text}</MathJax>
+      </p>
       {question.type == "multiple-choice" ? (
         <div className="flex flex-col justify-center gap-3 mt-3">
           {question.choices.map((label, index) => (
