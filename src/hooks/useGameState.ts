@@ -35,7 +35,7 @@ const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [assignmentScore, setAssignmentScore] = useState<number>(0);
-  const [coins, setCoins] = useState<number>(5);
+  const [coins, setCoins] = useState<number>(2);
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<number[]>([]);
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     null

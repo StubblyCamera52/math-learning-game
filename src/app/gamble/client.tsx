@@ -1,13 +1,19 @@
 "use client";
 import { useGame } from "@/components/game/gameContextProvider";
 import { useEffect, useRef, useState } from "react";
-import Matter, { Body } from "matter-js";
+import Matter, { Body, World } from "matter-js";
 import { toast } from "sonner";
 
 export default function GamebleClient() {
-  const { coins, multiplyCoins } = useGame();
+  const { coins, multiplyCoins, setCoins } = useGame();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const puckRef = useRef<Matter.Body>(null);
+  const coinsRef = useRef<number>(coins);
+  const [notDropped, setNotDropped] = useState<boolean>(true);
+
+  useEffect(() => {
+    coinsRef.current = coins;
+  }, [coins]);
 
   useEffect(() => {
     // this is an aboslute nightmare... but it works.
@@ -18,6 +24,7 @@ export default function GamebleClient() {
     let Bodies = Matter.Bodies;
     let Events = Matter.Events;
     let Composite = Matter.Composite;
+    let Sleeping = Matter.Sleeping;
 
     let engine = Engine.create();
     let render = Render.create({
@@ -28,21 +35,25 @@ export default function GamebleClient() {
         height: 700,
         background: "#FDFBD4",
         wireframeBackground: "#222",
-        hasBounds: true,
-        wireframes: false,
+        hasBounds: false,
+        wireframes: true,
         showDebug: true,
+        showSleeping: true,
       },
     });
+
+    engine.enableSleeping = true;
 
     // @ts-ignore
     Matter.Render.setPixelRatio(render, "auto");
 
-    let puck = Bodies.circle(100, 0, 10, {
-      restitution: 0.8,
-      friction: 0,
+    let puck = Bodies.circle(100, 50, 10, {
+      restitution: .9,
+      friction: .1,
       render: {
-        fillStyle: "#545333"
+        fillStyle: "#545333",
       },
+      isStatic: true,
     });
 
     puckRef.current = puck;
@@ -84,17 +95,7 @@ export default function GamebleClient() {
 
     for (let i = 0; i < 11; i++) {
       pegs.push(
-        Bodies.circle(i * 60 + 30, 200, 15, {
-          isStatic: true,
-        })
-      );
-      pegs.push(
         Bodies.circle(i * 60, 250, 15, {
-          isStatic: true,
-        })
-      );
-      pegs.push(
-        Bodies.circle(i * 60 + 30, 300, 15, {
           isStatic: true,
         })
       );
@@ -104,17 +105,7 @@ export default function GamebleClient() {
         })
       );
       pegs.push(
-        Bodies.circle(i * 60 + 30, 400, 15, {
-          isStatic: true,
-        })
-      );
-      pegs.push(
         Bodies.circle(i * 60, 450, 15, {
-          isStatic: true,
-        })
-      );
-      pegs.push(
-        Bodies.circle(i * 60 + 30, 500, 15, {
           isStatic: true,
         })
       );
@@ -123,15 +114,38 @@ export default function GamebleClient() {
           isStatic: true,
         })
       );
+    }
+
+    for (let i=0; i<8; i++) {
       pegs.push(
-        Bodies.circle(i * 60 + 30, 600, 15, {
+        Bodies.circle(i * 60 + 90, 200, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 90, 300, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 90, 400, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 90, 500, 15, {
+          isStatic: true,
+        })
+      );
+      pegs.push(
+        Bodies.circle(i * 60 + 90, 600, 15, {
           isStatic: true,
         })
       );
     }
 
     for (let i = 1; i < 10; i++) {
-      pegs.push(Bodies.rectangle(60 * i, 700, 10, 130, { isStatic: true }));
+      pegs.push(Bodies.rectangle(60 * i, 700, 2, 130, { isStatic: true }));
     }
 
     Events.on(engine, "collisionStart", function (event) {
@@ -150,7 +164,7 @@ export default function GamebleClient() {
         }
 
         if (puckBody) {
-          puckBody.render.fillStyle = "#ff0000";
+          //puckBody.render.fillStyle = "#ff0000";
           puckBody.isStatic = true;
 
           const x = puckBody.position.x;
@@ -168,9 +182,11 @@ export default function GamebleClient() {
             multiplyCoins(1);
             toast("1X coins.");
           } else if (x > 240 && x < 360) {
+            setCoins(c => c+2)
             multiplyCoins(0.5);
-            toast("0.5X Coins :(")
+            toast("0.5X Coins :(");
           }
+          setNotDropped(true);
           break;
         }
       }
@@ -178,14 +194,35 @@ export default function GamebleClient() {
 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.code === "Space" && puckRef.current) {
-        event.preventDefault();
+        console.log(coinsRef.current);
+        if (coinsRef.current < 2) {
+          toast("your broke 😭 (you need 2 coins to play)");
+          return;
+        }
 
-        const randomX = Math.random() * 500 + 50;
-        Body.setPosition(puckRef.current, { x: randomX, y: 50 });
-        Body.setVelocity(puckRef.current, { x: 0, y: 0 });
-        Body.setAngularVelocity(puckRef.current, 0);
-        puckRef.current.render.fillStyle = "#545333"
-        puckRef.current.isStatic = false;
+        if (
+          (puckRef.current.isStatic == true) &&
+          notDropped
+        ) {
+          setCoins(c => c-2);
+          let p: Matter.Vector = { x: puckRef.current.position.x, y: 50 };
+          event.preventDefault();
+          World.remove(engine.world, puckRef.current);
+          puckRef.current = null;
+          let b = Bodies.circle(p.x, p.y, 10, {
+            restitution: .9,
+            friction: .1,
+            render: {
+              fillStyle: "#545333",
+            },
+          });
+          Composite.add(engine.world, b);
+          setNotDropped((b) => false);
+          puckRef.current = b;
+        } else if (puckRef.current.isSleeping == true) {
+          setNotDropped((b) => true);
+          puckRef.current.isStatic = true;
+        }
       }
     };
 
@@ -202,6 +239,13 @@ export default function GamebleClient() {
     Render.run(render);
 
     setInterval(function () {
+      if (notDropped && puckRef.current && puckRef.current.isStatic) {
+        Body.setPosition(puckRef.current, {
+          x: Math.sin(engine.timing.timestamp / 1000) * 180 + 300,
+          y: 50,
+        });
+      }
+
       Engine.update(engine, 1000 / 60);
     }, 1000 / 60);
 
@@ -214,7 +258,9 @@ export default function GamebleClient() {
 
   return (
     <div>
-      <canvas ref={canvasRef} className="rounded-xl"/>
+      <h1 className="text-lg">Press Space to play, Costs 2 Coins per Play</h1>
+      <h3 className="text-sm">If puck gets stuck press space</h3>
+      <canvas ref={canvasRef} className="rounded-xl" />
     </div>
   );
 }
