@@ -33,9 +33,9 @@ export function QuestionDisplay({
         onSubmitAnswer(selectedAnswer);
       }}
     >
-      <p className="font-bold text-xl mb-3">
-        <MathJax>{question.text}</MathJax>
-      </p>
+      <MathJax dynamic inline>
+        <p className="font-bold text-xl mb-3">{question.text}</p>
+      </MathJax>
       {question.type == "multiple-choice" ? (
         <div className="flex flex-col justify-center gap-3 mt-3">
           {question.choices.map((label, index) => (

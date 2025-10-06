@@ -220,6 +220,7 @@ export default function GamebleClient() {
           setNotDropped((b) => false);
           puckRef.current = b;
         } else if (puckRef.current.isSleeping == true) {
+          setCoins(c => c+2);
           setNotDropped((b) => true);
           puckRef.current.isStatic = true;
         }
@@ -259,7 +260,7 @@ export default function GamebleClient() {
   return (
     <div>
       <h1 className="text-lg">Press Space to play, Costs 2 Coins per Play</h1>
-      <h3 className="text-sm">If puck gets stuck press space</h3>
+      <h3 className="text-sm">If puck gets stuck press space and you'll get your coins back</h3>
       <canvas ref={canvasRef} className="rounded-xl" />
     </div>
   );

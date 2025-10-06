@@ -14,7 +14,7 @@ const rational_one_step = (): Question => {
   let question: Question = {
     index: 0,
     type: "single-answer",
-    text: `What is the value of x? $$\\dfrac{${result}}x = ${first}$$`,
+    text: `What is the value of x? $$\\dfrac{${result}}{x} = ${first}$$`,
     choices: [],
     correctAnswer: second.toString(),
   };
