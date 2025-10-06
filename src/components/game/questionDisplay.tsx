@@ -33,7 +33,7 @@ export function QuestionDisplay({
         onSubmitAnswer(selectedAnswer);
       }}
     >
-      <MathJax dynamic inline>
+      <MathJax dynamic>
         <p className="font-bold text-xl mb-3">{question.text}</p>
       </MathJax>
       {question.type == "multiple-choice" ? (
