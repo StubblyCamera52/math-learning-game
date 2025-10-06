@@ -10,6 +10,8 @@ This project is still a work in progress and I will probably keep updating it ev
 
 ## Demo (try it out)
 
+https://hc-cdn.hel1.your-objectstorage.com/s/v3/b11593c8654d717555200f51093639b962ffb73f_siegeweek5demovideo.mp4
+
 [math-learning-game demo](https://math-learning-game.yellowlion228.workers.dev/)
 You answer questions to get coins and then gamble those coins or unlock new question pools in the shop.
 ### Note: Currently progress will not save if you reload the page.
