@@ -8,7 +8,7 @@ import { toast } from "sonner";
 const questionGenerators = {
   linear_two_step,
   arithmetic_addition_3,
-  rational_one_step
+  rational_one_step,
 };
 
 export interface GameState {
@@ -33,6 +33,11 @@ export interface GameState {
   generateQuestion: () => Question;
 }
 
+export type SavedGame = {
+  coins: number;
+  unlocks: string[];
+};
+
 const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -52,8 +57,21 @@ const useGameState = () => {
 
   useEffect(() => {
     console.log("useGameState mounted/remounted");
+    const saveData = localStorage.getItem("saveData");
+    if (saveData) {
+      const saveDataObj = JSON.parse(saveData);
+      setCoins(c => saveDataObj.coins);
+      setUnlockedQuestionPools(p => saveDataObj.unlocks);
+    }
     return () => console.log("useGameState unmounting");
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "saveData",
+      JSON.stringify({ coins: coins, unlocks: unlockedQuestionPools })
+    );
+  }, [coins, unlockedQuestionPools]);
 
   useEffect(() => {
     setCurrentQuestion(generateQuestion);
@@ -98,7 +116,7 @@ const useGameState = () => {
   const submitAnswer = (answer: string): boolean => {
     if (!currentQuestion) return false;
 
-    setQuestionsAnswered(n => n+1);
+    setQuestionsAnswered((n) => n + 1);
 
     console.log(coins);
 
@@ -145,7 +163,7 @@ const useGameState = () => {
     unlockQuestionPool,
     setCoins,
     generateQuestion,
-    questionsAnswered
+    questionsAnswered,
   };
 };
 
