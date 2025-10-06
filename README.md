@@ -13,6 +13,7 @@ This project is still a work in progress and I will probably keep updating it ev
 https://github.com/user-attachments/assets/16de7dbd-3da9-4b6c-8861-971b85f8609c
 
 [math-learning-game demo](https://math-learning-game.yellowlion228.workers.dev/)
+  
 You answer questions to get coins and then gamble those coins or unlock new question pools in the shop.
 ### Note: Currently progress will not save if you reload the page.
 hosted on cloudflare workers
