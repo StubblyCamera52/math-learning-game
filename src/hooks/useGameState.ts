@@ -2,11 +2,13 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Assignment, Question } from "@/data/mostOfTheTypes";
 import { linear_two_step } from "@/lib/utils/generators/linear/two-step";
 import { arithmetic_addition_3 } from "@/lib/utils/generators/arithmetic/addition3";
+import { rational_one_step } from "@/lib/utils/generators/rational/one-step";
 import { toast } from "sonner";
 
 const questionGenerators = {
   linear_two_step,
   arithmetic_addition_3,
+  rational_one_step
 };
 
 export interface GameState {
@@ -35,7 +37,7 @@ const useGameState = () => {
   const [assignmentId, setAssignmentId] = useState<number>(-1);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [assignmentScore, setAssignmentScore] = useState<number>(0);
-  const [coins, setCoins] = useState<number>(2);
+  const [coins, setCoins] = useState<number>(8);
   const [answeredQuestionIds, setAnsweredQuestionIds] = useState<number[]>([]);
   const [currentAssignment, setCurrentAssignment] = useState<Assignment | null>(
     null

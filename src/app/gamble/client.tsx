@@ -49,7 +49,7 @@ export default function GamebleClient() {
 
     let puck = Bodies.circle(100, 50, 10, {
       restitution: .9,
-      friction: .1,
+      friction: 0,
       render: {
         fillStyle: "#545333",
       },
@@ -211,7 +211,7 @@ export default function GamebleClient() {
           puckRef.current = null;
           let b = Bodies.circle(p.x, p.y, 10, {
             restitution: .9,
-            friction: .1,
+            friction: 0,
             render: {
               fillStyle: "#545333",
             },

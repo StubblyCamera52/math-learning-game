@@ -32,6 +32,15 @@ const shopItems: ShopItem[] = [
     type: "unlock",
     unlockName: "arithmetic_addition_3",
   },
+  {
+    id: 2,
+    title: "Unlock New Math",
+    description: "1 Step Rational Equation",
+    details: "1 step rational equations for practice mode",
+    price: 5,
+    type: "unlock",
+    unlockName: "rational_one_step",
+  },
 ];
 
 export default function ShopClient() {
@@ -50,12 +59,17 @@ export default function ShopClient() {
             price={item.price}
             type={item.type}
             onBuy={() => {
-              if (gameState.coins >= item.price && !gameState.unlockedQuestionPools.includes(item.unlockName)) {
+              if (
+                gameState.coins >= item.price &&
+                !gameState.unlockedQuestionPools.includes(item.unlockName)
+              ) {
                 console.log(item.unlockName);
                 gameState.unlockQuestionPool(item.unlockName);
-                gameState.setCoins(prevCoins => prevCoins - item.price);
+                gameState.setCoins((prevCoins) => prevCoins - item.price);
               } else {
-                toast("Not enough coins. Maybe go do some gambling or answer some math questions.")
+                toast(
+                  "Not enough coins. Maybe go do some gambling or answer some math questions."
+                );
               }
             }}
             isUnlocked={gameState.unlockedQuestionPools.includes(
