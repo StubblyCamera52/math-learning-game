@@ -36,9 +36,9 @@ export default function GamebleClient() {
         background: "#FDFBD4",
         wireframeBackground: "#222",
         hasBounds: false,
-        wireframes: true,
-        showDebug: true,
-        showSleeping: true,
+        wireframes: false,
+        showDebug: false,
+        showSleeping: false,
       },
     });
 

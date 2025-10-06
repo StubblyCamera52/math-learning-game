@@ -47,7 +47,7 @@ export default function ShopClient() {
   const gameState = useGame();
 
   return (
-    <div>
+    <div className="flex flex-row gap-4">
       {shopItems.map((item, index) => {
         return (
           <ShopItemCard
@@ -95,7 +95,7 @@ interface ShopItemProps {
 
 const ShopItemCard: React.FC<ShopItemProps> = (props) => {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="w-full max-w-sm flex-col">
       <CardHeader>
         <CardTitle className="text-center">{props.title}</CardTitle>
         <CardDescription className="text-center">
@@ -105,7 +105,7 @@ const ShopItemCard: React.FC<ShopItemProps> = (props) => {
       <CardContent>
         <p>{props.details}</p>
       </CardContent>
-      <CardFooter className="flex-col gap-2">
+      <CardFooter className="flex-col gap-2 mt-auto">
         <p className="font-bold">{props.price} Coins</p>
         {props.isUnlocked ? (
           <Button className="w-full" variant={"ghost"}>
