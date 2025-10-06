@@ -14,11 +14,11 @@ export default function PracticeClient() {
 
   return (
     <Card className="w-full bg-stone-600 max-w-2xl p-12 mt-12 h-full relative">
-      <div className="bg-green-500 size-14 rounded-xl absolute top-[-1rem] right-[-1rem] rotate-12 flex text-center items-center justify-center">
+      {/* <div className="bg-green-500 size-[56px] rounded-xl absolute top-[-1rem] right-[-1rem] rotate-12 flex text-center items-center justify-center">
         <span className="flex font-extrabold text-xl">
           #{questionsAnswered + 1}
         </span>
-      </div>
+      </div> */}
       {currentQuestion ? (
         <QuestionDisplay
           question={currentQuestion}

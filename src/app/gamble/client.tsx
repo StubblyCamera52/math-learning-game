@@ -48,7 +48,7 @@ export default function GamebleClient() {
     Matter.Render.setPixelRatio(render, "auto");
 
     let puck = Bodies.circle(100, 50, 10, {
-      restitution: .9,
+      restitution: 0.9,
       friction: 0,
       render: {
         fillStyle: "#545333",
@@ -116,7 +116,7 @@ export default function GamebleClient() {
       );
     }
 
-    for (let i=0; i<8; i++) {
+    for (let i = 0; i < 8; i++) {
       pegs.push(
         Bodies.circle(i * 60 + 90, 200, 15, {
           isStatic: true,
@@ -170,21 +170,21 @@ export default function GamebleClient() {
           const x = puckBody.position.x;
 
           if (x < 60 || x > 540) {
-            multiplyCoins(4);
-            toast("4X COINS!!!");
+            setCoins((c) => c + 8);
+            toast("Net +6 Coins");
           } else if ((x > 60 && x < 120) || (x < 540 && x > 480)) {
-            multiplyCoins(2);
-            toast("2X COINS");
+            setCoins((c) => c + 4);
+            toast("Net +2 Coins");
           } else if ((x > 120 && x < 180) || (x < 480 && x > 420)) {
-            multiplyCoins(1.5);
-            toast("1.5X Coins");
+            setCoins((c) => c + 3);
+            toast("Net +1 Coin");
           } else if ((x > 180 && x < 240) || (x < 420 && x > 360)) {
-            multiplyCoins(1);
-            toast("1X coins.");
+            setCoins((c) => c + 2);
+            toast("Net +0 Coins");
           } else if (x > 240 && x < 360) {
-            setCoins(c => c+2)
+            setCoins((c) => c + 1);
             multiplyCoins(0.5);
-            toast("0.5X Coins :(");
+            toast("Net -1 Coin");
           }
           setNotDropped(true);
           break;
@@ -200,17 +200,14 @@ export default function GamebleClient() {
           return;
         }
 
-        if (
-          (puckRef.current.isStatic == true) &&
-          notDropped
-        ) {
-          setCoins(c => c-2);
+        if (puckRef.current.isStatic == true && notDropped) {
+          setCoins((c) => c - 2);
           let p: Matter.Vector = { x: puckRef.current.position.x, y: 50 };
           event.preventDefault();
           World.remove(engine.world, puckRef.current);
           puckRef.current = null;
           let b = Bodies.circle(p.x, p.y, 10, {
-            restitution: .9,
+            restitution: 0.9,
             friction: 0,
             render: {
               fillStyle: "#545333",
@@ -220,7 +217,7 @@ export default function GamebleClient() {
           setNotDropped((b) => false);
           puckRef.current = b;
         } else if (puckRef.current.isSleeping == true) {
-          setCoins(c => c+2);
+          setCoins((c) => c + 2);
           setNotDropped((b) => true);
           puckRef.current.isStatic = true;
         }
@@ -260,7 +257,9 @@ export default function GamebleClient() {
   return (
     <div>
       <h1 className="text-lg">Press Space to play, Costs 2 Coins per Play</h1>
-      <h3 className="text-sm">If puck gets stuck press space and you'll get your coins back</h3>
+      <h3 className="text-sm">
+        If puck gets stuck press space and you'll get your coins back
+      </h3>
       <canvas ref={canvasRef} className="rounded-xl" />
     </div>
   );
